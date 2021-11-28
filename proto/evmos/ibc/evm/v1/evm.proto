@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package evmos.ibc.evm.v1;
+
+option go_package = "github.com/tharsis/evmos/x/ibc/evm/types";
+
+import "gogoproto/gogo.proto";
+
+// Params defines the set of IBC EVM parameters.
+message Params {
+  // send_enabled enables or disables all EVM packets sent from this
+  // chain.
+  bool send_enabled = 1 [(gogoproto.moretags) = "yaml:\"send_enabled\""];
+  // receive_enabled enables or disables all EVM packets received to this
+  // chain.
+  bool receive_enabled = 2 [(gogoproto.moretags) = "yaml:\"receive_enabled\""];
+}

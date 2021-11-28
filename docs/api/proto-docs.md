@@ -4,6 +4,18 @@
 
 ## Table of Contents
 
+- [evmos/ibc/evm/v1/evm.proto](#evmos/ibc/evm/v1/evm.proto)
+    - [Params](#evmos.ibc.evm.v1.Params)
+  
+- [evmos/ibc/evm/v1/genesis.proto](#evmos/ibc/evm/v1/genesis.proto)
+    - [GenesisState](#evmos.ibc.evm.v1.GenesisState)
+  
+- [evmos/ibc/evm/v1/query.proto](#evmos/ibc/evm/v1/query.proto)
+    - [QueryParamsRequest](#evmos.ibc.evm.v1.QueryParamsRequest)
+    - [QueryParamsResponse](#evmos.ibc.evm.v1.QueryParamsResponse)
+  
+    - [Query](#evmos.ibc.evm.v1.Query)
+  
 - [evmos/intrarelayer/v1/intrarelayer.proto](#evmos/intrarelayer/v1/intrarelayer.proto)
     - [RegisterCoinProposal](#evmos.intrarelayer.v1.RegisterCoinProposal)
     - [RegisterERC20Proposal](#evmos.intrarelayer.v1.RegisterERC20Proposal)
@@ -36,6 +48,121 @@
     - [Msg](#evmos.intrarelayer.v1.Msg)
   
 - [Scalar Value Types](#scalar-value-types)
+
+
+
+<a name="evmos/ibc/evm/v1/evm.proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## evmos/ibc/evm/v1/evm.proto
+
+
+
+<a name="evmos.ibc.evm.v1.Params"></a>
+
+### Params
+Params defines the set of IBC EVM parameters.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `send_enabled` | [bool](#bool) |  | send_enabled enables or disables all EVM packets sent from this chain. |
+| `receive_enabled` | [bool](#bool) |  | receive_enabled enables or disables all EVM packets received to this chain. |
+
+
+
+
+
+ <!-- end messages -->
+
+ <!-- end enums -->
+
+ <!-- end HasExtensions -->
+
+ <!-- end services -->
+
+
+
+<a name="evmos/ibc/evm/v1/genesis.proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## evmos/ibc/evm/v1/genesis.proto
+
+
+
+<a name="evmos.ibc.evm.v1.GenesisState"></a>
+
+### GenesisState
+GenesisState defines the ibc-evm genesis state
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `port_id` | [string](#string) |  |  |
+| `params` | [Params](#evmos.ibc.evm.v1.Params) |  |  |
+
+
+
+
+
+ <!-- end messages -->
+
+ <!-- end enums -->
+
+ <!-- end HasExtensions -->
+
+ <!-- end services -->
+
+
+
+<a name="evmos/ibc/evm/v1/query.proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## evmos/ibc/evm/v1/query.proto
+
+
+
+<a name="evmos.ibc.evm.v1.QueryParamsRequest"></a>
+
+### QueryParamsRequest
+QueryParamsRequest is the request type for the Query/Params RPC method.
+
+
+
+
+
+
+<a name="evmos.ibc.evm.v1.QueryParamsResponse"></a>
+
+### QueryParamsResponse
+QueryParamsResponse is the response type for the Query/Params RPC method.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `params` | [Params](#evmos.ibc.evm.v1.Params) |  | params defines the parameters of the module. |
+
+
+
+
+
+ <!-- end messages -->
+
+ <!-- end enums -->
+
+ <!-- end HasExtensions -->
+
+
+<a name="evmos.ibc.evm.v1.Query"></a>
+
+### Query
+Query provides defines the gRPC querier service.
+
+| Method Name | Request Type | Response Type | Description | HTTP Verb | Endpoint |
+| ----------- | ------------ | ------------- | ------------| ------- | -------- |
+| `Params` | [QueryParamsRequest](#evmos.ibc.evm.v1.QueryParamsRequest) | [QueryParamsResponse](#evmos.ibc.evm.v1.QueryParamsResponse) | Params queries all parameters of the ibc-evm module. | GET|/evmos/ibc/evm/v1/params|
+
+ <!-- end services -->
 
 
 

@@ -19,7 +19,7 @@ require (
 	github.com/tendermint/tm-db v0.6.4
 	github.com/tharsis/ethermint v0.8.1
 	go.opencensus.io v0.23.0
-	google.golang.org/genproto v0.0.0-20211117155847-120650a500bb
+	google.golang.org/genproto v0.0.0-20211118181313-81c1377c94b1
 	google.golang.org/grpc v1.42.0
 	google.golang.org/protobuf v1.27.1
 )
