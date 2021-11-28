@@ -8,7 +8,6 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	capabilitytypes "github.com/cosmos/cosmos-sdk/x/capability/types"
 
-	transfertypes "github.com/cosmos/ibc-go/v2/modules/apps/transfer/types"
 	channeltypes "github.com/cosmos/ibc-go/v2/modules/core/04-channel/types"
 	porttypes "github.com/cosmos/ibc-go/v2/modules/core/05-port/types"
 	host "github.com/cosmos/ibc-go/v2/modules/core/24-host"
@@ -236,7 +235,7 @@ func (im IBCModule) OnAcknowledgementPacket(
 	// 	),
 	// )
 
-	switch resp := ack.Response.(type) {
+	switch ack.Response.(type) {
 	case *channeltypes.Acknowledgement_Result:
 		// TODO: Emit result logs
 		// ctx.EventManager().EmitEvent(
@@ -269,19 +268,19 @@ func (im IBCModule) OnTimeoutPacket(
 	}
 
 	// refund tokens
-	if err := im.keeper.OnTimeoutPacket(ctx, packet, data); err != nil {
+	if err := im.keeper.OnTimeoutPacket(ctx, packet, tx); err != nil {
 		return err
 	}
 
-	ctx.EventManager().EmitEvent(
-		sdk.NewEvent(
-			types.EventTypeTimeout,
-			sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
-			sdk.NewAttribute(types.AttributeKeyRefundReceiver, tx.Sender),
-			sdk.NewAttribute(types.AttributeKeyRefundDenom, data.Denom),
-			sdk.NewAttribute(transfertypes.AttributeKeyAmount, tx.Value().String()),
-		),
-	)
+	// ctx.EventManager().EmitEvent(
+	// 	sdk.NewEvent(
+	// 		types.EventTypeTimeout,
+	// 		sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
+	// 		sdk.NewAttribute(types.AttributeKeyRefundReceiver, tx.Sender),
+	// 		sdk.NewAttribute(types.AttributeKeyRefundDenom, data.Denom),
+	// 		sdk.NewAttribute(transfertypes.AttributeKeyAmount, tx.Value().String()),
+	// 	),
+	// )
 
 	return nil
 }
