@@ -24,7 +24,7 @@ func ValidateEthTx(tx *ethtypes.Transaction, chainID *big.Int) error {
 		return sdkerrors.Wrapf(ErrInvalidEthereumTx, "chain ID mismatch, expected %d, got %d", chainID, tx.ChainId())
 	}
 
-	ethtx := evmtypes.MsgEthereumTx{}
+	ethtx := new(evmtypes.MsgEthereumTx)
 	if err := ethtx.FromEthereumTx(tx); err != nil {
 		return err
 	}
