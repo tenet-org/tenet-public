@@ -8,6 +8,7 @@ import (
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
 	capabilitytypes "github.com/cosmos/cosmos-sdk/x/capability/types"
 
+	transfertypes "github.com/cosmos/ibc-go/v2/modules/apps/transfer/types"
 	channeltypes "github.com/cosmos/ibc-go/v2/modules/core/04-channel/types"
 	porttypes "github.com/cosmos/ibc-go/v2/modules/core/05-port/types"
 	host "github.com/cosmos/ibc-go/v2/modules/core/24-host"
@@ -225,17 +226,17 @@ func (im IBCModule) OnAcknowledgementPacket(
 		return err
 	}
 
-	// ctx.EventManager().EmitEvent(
-	// 	sdk.NewEvent(
-	// 		types.EventTypePacket,
-	// 		sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
-	// 		// sdk.NewAttribute(transfertypes.AttributeKeyReceiver, data.Receiver),
-	// 		sdk.NewAttribute(transfertypes.AttributeKeyAmount, tx.Value().String()),
-	// 		sdk.NewAttribute(transfertypes.AttributeKeyAck, ack.String()),
-	// 	),
-	// )
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			types.EventTypePacket,
+			sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
+			// sdk.NewAttribute(transfertypes.AttributeKeyReceiver, data.Receiver),
+			sdk.NewAttribute(transfertypes.AttributeKeyAmount, tx.Value().String()),
+			sdk.NewAttribute(transfertypes.AttributeKeyAck, ack.String()),
+		),
+	)
 
-	switch ack.Response.(type) {
+	switch resp := ack.Response.(type) {
 	case *channeltypes.Acknowledgement_Result:
 		// TODO: Emit result logs
 		// ctx.EventManager().EmitEvent(
@@ -245,12 +246,12 @@ func (im IBCModule) OnAcknowledgementPacket(
 		// 	),
 		// )
 	case *channeltypes.Acknowledgement_Error:
-		// ctx.EventManager().EmitEvent(
-		// 	sdk.NewEvent(
-		// 		types.EventTypePacket,
-		// 		sdk.NewAttribute(transfertypes.AttributeKeyAckError, resp.Error),
-		// 	),
-		// )
+		ctx.EventManager().EmitEvent(
+			sdk.NewEvent(
+				types.EventTypePacket,
+				sdk.NewAttribute(transfertypes.AttributeKeyAckError, resp.Error),
+			),
+		)
 	}
 
 	return nil
@@ -267,20 +268,17 @@ func (im IBCModule) OnTimeoutPacket(
 		return sdkerrors.Wrapf(sdkerrors.ErrUnknownRequest, "cannot unmarshal IBC EVM packet data: %s", err)
 	}
 
-	// refund tokens
 	if err := im.keeper.OnTimeoutPacket(ctx, packet, tx); err != nil {
 		return err
 	}
 
-	// ctx.EventManager().EmitEvent(
-	// 	sdk.NewEvent(
-	// 		types.EventTypeTimeout,
-	// 		sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
-	// 		sdk.NewAttribute(types.AttributeKeyRefundReceiver, tx.Sender),
-	// 		sdk.NewAttribute(types.AttributeKeyRefundDenom, data.Denom),
-	// 		sdk.NewAttribute(transfertypes.AttributeKeyAmount, tx.Value().String()),
-	// 	),
-	// )
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			transfertypes.EventTypeTimeout,
+			sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
+			sdk.NewAttribute(transfertypes.AttributeKeyAmount, tx.Value().String()),
+		),
+	)
 
 	return nil
 }

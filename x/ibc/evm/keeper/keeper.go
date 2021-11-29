@@ -7,11 +7,13 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	capabilitykeeper "github.com/cosmos/cosmos-sdk/x/capability/keeper"
 	capabilitytypes "github.com/cosmos/cosmos-sdk/x/capability/types"
+	clientkeeper "github.com/cosmos/ibc-go/v2/modules/core/02-client/keeper"
 	host "github.com/cosmos/ibc-go/v2/modules/core/24-host"
 
 	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
 
 	evmkeeper "github.com/tharsis/ethermint/x/evm/keeper"
+	feemarketkeeper "github.com/tharsis/ethermint/x/feemarket/keeper"
 	"github.com/tharsis/evmos/x/ibc/evm/types"
 )
 
@@ -21,32 +23,37 @@ type Keeper struct {
 	cdc        codec.BinaryCodec
 	paramstore paramtypes.Subspace
 
-	channelKeeper types.ChannelKeeper
-	portKeeper    types.PortKeeper
-	evmKeeper     evmkeeper.Keeper
-	scopedKeeper  capabilitykeeper.ScopedKeeper
+	clientkeeper    clientkeeper.Keeper
+	channelKeeper   types.ChannelKeeper
+	portKeeper      types.PortKeeper
+	evmKeeper       evmkeeper.Keeper
+	feemarketKeeper feemarketkeeper.Keeper
+	scopedKeeper    capabilitykeeper.ScopedKeeper
 }
 
 // NewKeeper creates a new IBC EMV Keeper instance
 func NewKeeper(
 	cdc codec.BinaryCodec, key sdk.StoreKey, paramSpace paramtypes.Subspace,
+	// TODO: client keeper
 	channelKeeper types.ChannelKeeper, portKeeper types.PortKeeper,
-	evmKeeper evmkeeper.Keeper, scopedKeeper capabilitykeeper.ScopedKeeper,
+	evmKeeper evmkeeper.Keeper, feemarketKeeper feemarketkeeper.Keeper,
+	scopedKeeper capabilitykeeper.ScopedKeeper,
 ) Keeper {
 
 	// set KeyTable if it has not already been set
-	// if !paramSpace.HasKeyTable() {
-	// 	paramSpace = paramSpace.WithKeyTable(types.ParamKeyTable())
-	// }
+	if !paramSpace.HasKeyTable() {
+		paramSpace = paramSpace.WithKeyTable(types.ParamKeyTable())
+	}
 
 	return Keeper{
-		cdc:           cdc,
-		storeKey:      key,
-		paramstore:    paramSpace,
-		channelKeeper: channelKeeper,
-		portKeeper:    portKeeper,
-		evmKeeper:     evmKeeper,
-		scopedKeeper:  scopedKeeper,
+		cdc:             cdc,
+		storeKey:        key,
+		paramstore:      paramSpace,
+		channelKeeper:   channelKeeper,
+		portKeeper:      portKeeper,
+		evmKeeper:       evmKeeper,
+		feemarketKeeper: feemarketKeeper,
+		scopedKeeper:    scopedKeeper,
 	}
 }
 

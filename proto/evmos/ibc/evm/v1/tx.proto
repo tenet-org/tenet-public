@@ -1,0 +1,41 @@
+syntax = "proto3";
+package evmos.ibc.evm.v1;
+
+option go_package = "github.com/tharsis/evmos/x/ibc/evm/types";
+
+import "google/api/annotations.proto";
+import "gogoproto/gogo.proto";
+import "cosmos/base/v1beta1/coin.proto";
+import "ibc/core/client/v1/client.proto";
+
+
+// Msg defines the IBC EVM Msg service.
+service Msg {
+  // IBCEthereumTx 
+  rpc IBCEthereumTx(MsgIBCEthereumTx) returns (MsgIBCEthereumTxResponse){
+    option (google.api.http).get = "/evmos/ibc/evm/v1/tx/ethereum_tx";
+  };
+}
+
+// MsgIBCEthereumTx defines an Ethereum tx to 
+message MsgIBCEthereumTx {
+  option (gogoproto.equal)           = false;
+  option (gogoproto.goproto_getters) = false;
+
+  // the port on which the packet will be sent
+  string source_port = 1 [(gogoproto.moretags) = "yaml:\"source_port\""];
+  // the channel by which the packet will be sent
+  string source_channel = 2 [(gogoproto.moretags) = "yaml:\"source_channel\""];
+  // Timeout height relative to the current block height.
+  // The timeout is disabled when set to 0.
+  ibc.core.client.v1.Height timeout_height = 3
+      [(gogoproto.moretags) = "yaml:\"timeout_height\"", (gogoproto.nullable) = false];
+  // Timeout timestamp (in nanoseconds) relative to the current block timestamp.
+  // The timeout is disabled when set to 0.
+  uint64 timeout_timestamp = 4 [(gogoproto.moretags) = "yaml:\"timeout_timestamp\""];
+  // Ethereum tx RLP encoded bytes
+  bytes ethereum_tx = 5;
+}
+
+// MsgIBCEthereumTxResponse defines the Msg/MsgIBCEthereumTx response type.
+message MsgIBCEthereumTxResponse {}

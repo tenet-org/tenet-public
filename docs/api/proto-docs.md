@@ -16,6 +16,12 @@
   
     - [Query](#evmos.ibc.evm.v1.Query)
   
+- [evmos/ibc/evm/v1/tx.proto](#evmos/ibc/evm/v1/tx.proto)
+    - [MsgIBCEthereumTx](#evmos.ibc.evm.v1.MsgIBCEthereumTx)
+    - [MsgIBCEthereumTxResponse](#evmos.ibc.evm.v1.MsgIBCEthereumTxResponse)
+  
+    - [Msg](#evmos.ibc.evm.v1.Msg)
+  
 - [evmos/intrarelayer/v1/intrarelayer.proto](#evmos/intrarelayer/v1/intrarelayer.proto)
     - [RegisterCoinProposal](#evmos.intrarelayer.v1.RegisterCoinProposal)
     - [RegisterERC20Proposal](#evmos.intrarelayer.v1.RegisterERC20Proposal)
@@ -161,6 +167,61 @@ Query provides defines the gRPC querier service.
 | Method Name | Request Type | Response Type | Description | HTTP Verb | Endpoint |
 | ----------- | ------------ | ------------- | ------------| ------- | -------- |
 | `Params` | [QueryParamsRequest](#evmos.ibc.evm.v1.QueryParamsRequest) | [QueryParamsResponse](#evmos.ibc.evm.v1.QueryParamsResponse) | Params queries all parameters of the ibc-evm module. | GET|/evmos/ibc/evm/v1/params|
+
+ <!-- end services -->
+
+
+
+<a name="evmos/ibc/evm/v1/tx.proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## evmos/ibc/evm/v1/tx.proto
+
+
+
+<a name="evmos.ibc.evm.v1.MsgIBCEthereumTx"></a>
+
+### MsgIBCEthereumTx
+MsgIBCEthereumTx defines an Ethereum tx to
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `source_port` | [string](#string) |  | the port on which the packet will be sent |
+| `source_channel` | [string](#string) |  | the channel by which the packet will be sent |
+| `timeout_height` | [ibc.core.client.v1.Height](#ibc.core.client.v1.Height) |  | Timeout height relative to the current block height. The timeout is disabled when set to 0. |
+| `timeout_timestamp` | [uint64](#uint64) |  | Timeout timestamp (in nanoseconds) relative to the current block timestamp. The timeout is disabled when set to 0. |
+| `ethereum_tx` | [bytes](#bytes) |  | Ethereum tx RLP encoded bytes |
+
+
+
+
+
+
+<a name="evmos.ibc.evm.v1.MsgIBCEthereumTxResponse"></a>
+
+### MsgIBCEthereumTxResponse
+MsgIBCEthereumTxResponse defines the Msg/MsgIBCEthereumTx response type.
+
+
+
+
+
+ <!-- end messages -->
+
+ <!-- end enums -->
+
+ <!-- end HasExtensions -->
+
+
+<a name="evmos.ibc.evm.v1.Msg"></a>
+
+### Msg
+Msg defines the IBC EVM Msg service.
+
+| Method Name | Request Type | Response Type | Description | HTTP Verb | Endpoint |
+| ----------- | ------------ | ------------- | ------------| ------- | -------- |
+| `IBCEthereumTx` | [MsgIBCEthereumTx](#evmos.ibc.evm.v1.MsgIBCEthereumTx) | [MsgIBCEthereumTxResponse](#evmos.ibc.evm.v1.MsgIBCEthereumTxResponse) | IBCEthereumTx | GET|/evmos/ibc/evm/v1/tx/ethereum_tx|
 
  <!-- end services -->
 

@@ -59,9 +59,15 @@ func (k Keeper) OnRecvPacket(ctx sdk.Context, packet channeltypes.Packet, tx *et
 // was a success then nothing occurs. If the acknowledgement failed, then
 // the state transition is reverted.
 func (k Keeper) OnAcknowledgementPacket(ctx sdk.Context, packet channeltypes.Packet, tx *ethtypes.Transaction, ack channeltypes.Acknowledgement) error {
-	switch ack.Response.(type) {
+	switch resp := ack.Response.(type) {
 	case *channeltypes.Acknowledgement_Error:
-		return nil // TODO: revert
+		k.Logger(ctx).Info(
+			"EVM state transition failed",
+			"txhash", tx.Hash().String(),
+			"counterparty-chain-ID", tx.ChainId().String(),
+			"error", resp.Error,
+		)
+		return nil
 	default:
 		// the acknowledgement succeeded on the receiving chain so nothing
 		// needs to be executed and no error needs to be returned
@@ -69,8 +75,7 @@ func (k Keeper) OnAcknowledgementPacket(ctx sdk.Context, packet channeltypes.Pac
 	}
 }
 
-// OnTimeoutPacket
+// OnTimeoutPacket returns an error
 func (k Keeper) OnTimeoutPacket(ctx sdk.Context, packet channeltypes.Packet, tx *ethtypes.Transaction) error {
-	// TODO: revert
-	return nil
+	return sdkerrors.Wrapf(channeltypes.ErrPacketTimeout, "IBC ethereum tx timeout: %s", tx.Hash())
 }
