@@ -2,14 +2,14 @@ package types
 
 const (
 	// ModuleName defines the IBC EVM name
-	ModuleName = "ibc-evm"
+	ModuleName = "xevm"
 
 	// Version defines the current version the IBC tranfer
 	// module supports
-	Version = "evm-1" // TODO: create I
+	Version = "xevm-1"
 
 	// PortID is the default port id that EVM module binds to
-	PortID = "evm"
+	PortID = "xevm"
 
 	// StoreKey is the store key string for IBC EVM
 	StoreKey = ModuleName

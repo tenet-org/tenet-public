@@ -13,4 +13,5 @@ var (
 	ErrReceiveDisabled      = sdkerrors.Register(ModuleName, 6, "IBC EVM packets received to this chain are disabled")
 	ErrMaxEVMChannels       = sdkerrors.Register(ModuleName, 7, "max IBC EVM channels")
 	ErrInvalidEthereumTx    = sdkerrors.Register(ModuleName, 8, "invalid ethereum tx")
+	ErrNonEVMChain          = sdkerrors.Register(ModuleName, 9, "receiving chain does not support EVM state transitions")
 )

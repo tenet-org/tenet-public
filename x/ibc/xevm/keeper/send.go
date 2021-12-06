@@ -9,9 +9,11 @@ import (
 	channeltypes "github.com/cosmos/ibc-go/v2/modules/core/04-channel/types"
 	host "github.com/cosmos/ibc-go/v2/modules/core/24-host"
 
-	"github.com/tharsis/evmos/x/ibc/evm/types"
+	"github.com/tharsis/evmos/x/ibc/xevm/types"
 )
 
+// SendIBCEthereumTx encodes an Ethereum transaction in an IBC packet data and
+// sends it to an EVM destination chain.
 func (k Keeper) SendIBCEthereumTx(
 	ctx sdk.Context,
 	sourcePort,

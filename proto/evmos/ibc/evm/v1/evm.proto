@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package evmos.ibc.evm.v1;
 
-option go_package = "github.com/tharsis/evmos/x/ibc/evm/types";
+option go_package = "github.com/tharsis/evmos/x/ibc/xevm/types";
 
 import "gogoproto/gogo.proto";
 

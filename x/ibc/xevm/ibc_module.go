@@ -1,4 +1,4 @@
-package evm
+package xevm
 
 import (
 	"fmt"
@@ -16,8 +16,9 @@ import (
 
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
 
-	"github.com/tharsis/evmos/x/ibc/evm/keeper"
-	"github.com/tharsis/evmos/x/ibc/evm/types"
+	evmtypes "github.com/tharsis/ethermint/x/evm/types"
+	"github.com/tharsis/evmos/x/ibc/xevm/keeper"
+	"github.com/tharsis/evmos/x/ibc/xevm/types"
 )
 
 // IBCModule implements the ICS26 interface for transfer given the transfer keeper.
@@ -167,39 +168,41 @@ func (im IBCModule) OnChanCloseConfirm(
 }
 
 // OnRecvPacket implements the IBCModule interface. A successful acknowledgement
-// is returned if the packet data is succesfully decoded and the receive application
+// is returned if the packet data is successfully decoded and the receive application
 // logic returns without error.
 func (im IBCModule) OnRecvPacket(
 	ctx sdk.Context,
 	packet channeltypes.Packet,
-	relayer sdk.AccAddress,
+	_ sdk.AccAddress,
 ) ibcexported.Acknowledgement {
 	ack := channeltypes.NewResultAcknowledgement([]byte{byte(1)})
 
 	tx := new(ethtypes.Transaction)
 	if err := tx.UnmarshalJSON(packet.GetData()); err != nil {
-		ack = channeltypes.NewErrorAcknowledgement(fmt.Sprintf("cannot unmarshal IBC EVM packet data: %w", err))
+		ack = channeltypes.NewErrorAcknowledgement(fmt.Sprintf("cannot unmarshal IBC EVM packet data: %s", err.Error()))
 	}
 
 	// only attempt the application logic if the packet data
 	// was successfully decoded
 	if ack.Success() {
-		err := im.keeper.OnRecvPacket(ctx, packet, tx)
+		resBz, err := im.keeper.OnRecvPacket(ctx, packet, tx)
 		if err != nil {
 			ack = channeltypes.NewErrorAcknowledgement(err.Error())
+		} else {
+			ack = channeltypes.NewResultAcknowledgement(resBz)
 		}
 	}
 
-	// ctx.EventManager().EmitEvent(
-	// 	sdk.NewEvent(
-	// 		types.EventTypePacket,
-	// 		sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
-	// 		// sdk.NewAttribute(types.AttributeKeyReceiver, tx.To().Hex()),
-	// 		// sdk.NewAttribute(types.AttributeKeyDenom, data.Denom),
-	// 		sdk.NewAttribute(transfertypes.AttributeKeyAmount, tx.Value().String()),
-	// 		sdk.NewAttribute(transfertypes.AttributeKeyAckSuccess, fmt.Sprintf("%t", ack.Success())),
-	// 	),
-	// )
+	ctx.EventManager().EmitEvent(
+		sdk.NewEvent(
+			types.EventTypePacket,
+			sdk.NewAttribute(sdk.AttributeKeyModule, types.ModuleName),
+			// sdk.NewAttribute(types.AttributeKeyReceiver, tx.To().Hex()),
+			// sdk.NewAttribute(types.AttributeKeyDenom, data.Denom),
+			sdk.NewAttribute(evmtypes.AttributeKeyEthereumTxHash, tx.Hash().String()),
+			sdk.NewAttribute(transfertypes.AttributeKeyAckSuccess, fmt.Sprintf("%t", ack.Success())),
+		),
+	)
 
 	// NOTE: acknowledgement will be written synchronously during IBC handler execution.
 	return ack

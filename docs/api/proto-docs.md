@@ -4,19 +4,19 @@
 
 ## Table of Contents
 
-- [evmos/ibc/evm/v1/evm.proto](#evmos/ibc/evm/v1/evm.proto)
+- [evmos/ibc/xevm/v1/evm.proto](#evmos/ibc/xevm/v1/evm.proto)
     - [Params](#evmos.ibc.evm.v1.Params)
   
-- [evmos/ibc/evm/v1/genesis.proto](#evmos/ibc/evm/v1/genesis.proto)
+- [evmos/ibc/xevm/v1/genesis.proto](#evmos/ibc/xevm/v1/genesis.proto)
     - [GenesisState](#evmos.ibc.evm.v1.GenesisState)
   
-- [evmos/ibc/evm/v1/query.proto](#evmos/ibc/evm/v1/query.proto)
+- [evmos/ibc/xevm/v1/query.proto](#evmos/ibc/xevm/v1/query.proto)
     - [QueryParamsRequest](#evmos.ibc.evm.v1.QueryParamsRequest)
     - [QueryParamsResponse](#evmos.ibc.evm.v1.QueryParamsResponse)
   
     - [Query](#evmos.ibc.evm.v1.Query)
   
-- [evmos/ibc/evm/v1/tx.proto](#evmos/ibc/evm/v1/tx.proto)
+- [evmos/ibc/xevm/v1/tx.proto](#evmos/ibc/xevm/v1/tx.proto)
     - [MsgIBCEthereumTx](#evmos.ibc.evm.v1.MsgIBCEthereumTx)
     - [MsgIBCEthereumTxResponse](#evmos.ibc.evm.v1.MsgIBCEthereumTxResponse)
   
@@ -57,10 +57,10 @@
 
 
 
-<a name="evmos/ibc/evm/v1/evm.proto"></a>
+<a name="evmos/ibc/xevm/v1/evm.proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
-## evmos/ibc/evm/v1/evm.proto
+## evmos/ibc/xevm/v1/evm.proto
 
 
 
@@ -89,10 +89,10 @@ Params defines the set of IBC EVM parameters.
 
 
 
-<a name="evmos/ibc/evm/v1/genesis.proto"></a>
+<a name="evmos/ibc/xevm/v1/genesis.proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
-## evmos/ibc/evm/v1/genesis.proto
+## evmos/ibc/xevm/v1/genesis.proto
 
 
 
@@ -121,10 +121,10 @@ GenesisState defines the ibc-evm genesis state
 
 
 
-<a name="evmos/ibc/evm/v1/query.proto"></a>
+<a name="evmos/ibc/xevm/v1/query.proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
-## evmos/ibc/evm/v1/query.proto
+## evmos/ibc/xevm/v1/query.proto
 
 
 
@@ -166,16 +166,16 @@ Query provides defines the gRPC querier service.
 
 | Method Name | Request Type | Response Type | Description | HTTP Verb | Endpoint |
 | ----------- | ------------ | ------------- | ------------| ------- | -------- |
-| `Params` | [QueryParamsRequest](#evmos.ibc.evm.v1.QueryParamsRequest) | [QueryParamsResponse](#evmos.ibc.evm.v1.QueryParamsResponse) | Params queries all parameters of the ibc-evm module. | GET|/evmos/ibc/evm/v1/params|
+| `Params` | [QueryParamsRequest](#evmos.ibc.evm.v1.QueryParamsRequest) | [QueryParamsResponse](#evmos.ibc.evm.v1.QueryParamsResponse) | Params queries all parameters of the ibc-evm module. | GET|/evmos/ibc/xevm/v1/params|
 
  <!-- end services -->
 
 
 
-<a name="evmos/ibc/evm/v1/tx.proto"></a>
+<a name="evmos/ibc/xevm/v1/tx.proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
-## evmos/ibc/evm/v1/tx.proto
+## evmos/ibc/xevm/v1/tx.proto
 
 
 
@@ -221,7 +221,7 @@ Msg defines the IBC EVM Msg service.
 
 | Method Name | Request Type | Response Type | Description | HTTP Verb | Endpoint |
 | ----------- | ------------ | ------------- | ------------| ------- | -------- |
-| `IBCEthereumTx` | [MsgIBCEthereumTx](#evmos.ibc.evm.v1.MsgIBCEthereumTx) | [MsgIBCEthereumTxResponse](#evmos.ibc.evm.v1.MsgIBCEthereumTxResponse) | IBCEthereumTx | GET|/evmos/ibc/evm/v1/tx/ethereum_tx|
+| `IBCEthereumTx` | [MsgIBCEthereumTx](#evmos.ibc.evm.v1.MsgIBCEthereumTx) | [MsgIBCEthereumTxResponse](#evmos.ibc.evm.v1.MsgIBCEthereumTxResponse) | IBCEthereumTx | GET|/evmos/ibc/xevm/v1/tx/ethereum_tx|
 
  <!-- end services -->
 
@@ -613,4 +613,3 @@ Msg defines the intrarelayer Msg service.
 | <a name="bool" /> bool |  | bool | boolean | boolean | bool | bool | boolean | TrueClass/FalseClass |
 | <a name="string" /> string | A string must always contain UTF-8 encoded or 7-bit ASCII text. | string | String | str/unicode | string | string | string | String (UTF-8) |
 | <a name="bytes" /> bytes | May contain any arbitrary sequence of bytes. | string | ByteString | str | []byte | ByteString | string | String (ASCII-8BIT) |
-

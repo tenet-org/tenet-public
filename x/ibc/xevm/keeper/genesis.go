@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/tharsis/evmos/x/ibc/evm/types"
+	"github.com/tharsis/evmos/x/ibc/xevm/types"
 )
 
 // InitGenesis initializes the ibc-transfer state and binds to PortID.

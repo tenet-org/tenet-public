@@ -109,6 +109,9 @@ import (
 	"github.com/tharsis/ethermint/x/feemarket"
 	feemarketkeeper "github.com/tharsis/ethermint/x/feemarket/keeper"
 	feemarkettypes "github.com/tharsis/ethermint/x/feemarket/types"
+	xevm "github.com/tharsis/evmos/x/ibc/xevm"
+	xevmkeeper "github.com/tharsis/evmos/x/ibc/xevm/keeper"
+	xevmtypes "github.com/tharsis/evmos/x/ibc/xevm/types"
 	"github.com/tharsis/evmos/x/intrarelayer"
 	irk "github.com/tharsis/evmos/x/intrarelayer/keeper"
 	irt "github.com/tharsis/evmos/x/intrarelayer/types"
@@ -158,6 +161,7 @@ var (
 		evm.AppModuleBasic{},
 		feemarket.AppModuleBasic{},
 		intrarelayer.AppModuleBasic{},
+		xevm.AppModuleBasic{},
 	)
 
 	// module account permissions
@@ -224,6 +228,7 @@ type Evmos struct {
 	// make scoped keepers public for test purposes
 	ScopedIBCKeeper      capabilitykeeper.ScopedKeeper
 	ScopedTransferKeeper capabilitykeeper.ScopedKeeper
+	ScopedXEvmKeeper     capabilitykeeper.ScopedKeeper
 
 	// Ethermint keepers
 	EvmKeeper       *evmkeeper.Keeper
@@ -231,6 +236,7 @@ type Evmos struct {
 
 	// Evmos keepers
 	IntrarelayerKeeper irk.Keeper
+	XEvmKeeper         xevmkeeper.Keeper
 
 	// the module manager
 	mm *module.Manager
@@ -285,7 +291,7 @@ func NewEvmos(
 		// ethermint keys
 		evmtypes.StoreKey, feemarkettypes.StoreKey,
 		// evmos keys
-		irt.StoreKey,
+		irt.StoreKey, xevmtypes.StoreKey,
 	)
 
 	// Add the EVM transient store key
@@ -313,6 +319,7 @@ func NewEvmos(
 
 	scopedIBCKeeper := app.CapabilityKeeper.ScopeToModule(ibchost.ModuleName)
 	scopedTransferKeeper := app.CapabilityKeeper.ScopeToModule(ibctransfertypes.ModuleName)
+	scopedXEvmKeeper := app.CapabilityKeeper.ScopeToModule(xevmtypes.ModuleName)
 
 	// Applications that wish to enforce statically created ScopedKeepers should call `Seal` after creating
 	// their scoped modules in `NewApp` with `ScopeToModule`
@@ -407,9 +414,18 @@ func NewEvmos(
 	)
 	transferModule := transfer.NewAppModule(app.TransferKeeper)
 
+	app.XEvmKeeper = xevmkeeper.NewKeeper(
+		appCodec, keys[xevmtypes.StoreKey], app.GetSubspace(xevmtypes.ModuleName),
+		app.IBCKeeper.ChannelKeeper, &app.IBCKeeper.PortKeeper,
+		app.EvmKeeper, app.FeeMarketKeeper, scopedXEvmKeeper,
+	)
+
+	ibcEVMModule := xevm.NewIBCModule(app.XEvmKeeper)
+
 	// Create static IBC router, add transfer route, then set and seal it
 	ibcRouter := porttypes.NewRouter()
 	ibcRouter.AddRoute(ibctransfertypes.ModuleName, transferModule)
+	ibcRouter.AddRoute(xevmtypes.ModuleName, ibcEVMModule)
 	app.IBCKeeper.SetRouter(ibcRouter)
 
 	// create evidence keeper with router
@@ -449,9 +465,10 @@ func NewEvmos(
 		feegrantmodule.NewAppModule(appCodec, app.AccountKeeper, app.BankKeeper, app.FeeGrantKeeper, app.interfaceRegistry),
 		authzmodule.NewAppModule(appCodec, app.AuthzKeeper, app.AccountKeeper, app.BankKeeper, app.interfaceRegistry),
 
-		// ibc modules
+		// IBC modules
 		ibc.NewAppModule(app.IBCKeeper),
 		transferModule,
+		xevm.NewAppModule(app.XEvmKeeper),
 		// Ethermint app modules
 		evm.NewAppModule(app.EvmKeeper, app.AccountKeeper),
 		feemarket.NewAppModule(app.FeeMarketKeeper),
@@ -493,7 +510,7 @@ func NewEvmos(
 		// Ethermint modules
 		evmtypes.ModuleName, feemarkettypes.ModuleName,
 		// Evmos modules
-		irt.ModuleName,
+		irt.ModuleName, xevmtypes.ModuleName,
 		// NOTE: crisis module must go at the end to check for invariants on each module
 		crisistypes.ModuleName,
 	)
@@ -527,6 +544,7 @@ func NewEvmos(
 		transferModule,
 		evm.NewAppModule(app.EvmKeeper, app.AccountKeeper),
 		feemarket.NewAppModule(app.FeeMarketKeeper),
+		xevm.NewAppModule(app.XEvmKeeper),
 	)
 
 	app.sm.RegisterStoreDecoders()
@@ -559,6 +577,7 @@ func NewEvmos(
 
 	app.ScopedIBCKeeper = scopedIBCKeeper
 	app.ScopedTransferKeeper = scopedTransferKeeper
+	app.ScopedXEvmKeeper = scopedXEvmKeeper
 
 	// Finally start the tpsCounter.
 	app.tpsCounter = newTPSCounter(logger)
@@ -791,5 +810,6 @@ func initParamsKeeper(
 	paramsKeeper.Subspace(feemarkettypes.ModuleName)
 	// evmos subspaces
 	paramsKeeper.Subspace(irt.ModuleName)
+	paramsKeeper.Subspace(xevmtypes.ModuleName)
 	return paramsKeeper
 }

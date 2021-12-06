@@ -1,4 +1,4 @@
-package evm
+package xevm
 
 import (
 	"context"
@@ -21,9 +21,9 @@ import (
 
 	porttypes "github.com/cosmos/ibc-go/v2/modules/core/05-port/types"
 
-	cli "github.com/tharsis/evmos/x/ibc/evm/client"
-	"github.com/tharsis/evmos/x/ibc/evm/keeper"
-	"github.com/tharsis/evmos/x/ibc/evm/types"
+	cli "github.com/tharsis/evmos/x/ibc/xevm/client"
+	"github.com/tharsis/evmos/x/ibc/xevm/keeper"
+	"github.com/tharsis/evmos/x/ibc/xevm/types"
 )
 
 var (

@@ -7,7 +7,8 @@ import (
 
 	"github.com/cosmos/cosmos-sdk/client"
 	"github.com/cosmos/cosmos-sdk/client/flags"
-	"github.com/tharsis/evmos/x/ibc/evm/types"
+
+	"github.com/tharsis/evmos/x/ibc/xevm/types"
 )
 
 // GetQueryCmd returns the parent command for all IBC EVM CLI query commands.

@@ -1,11 +1,19 @@
 package types
 
 import (
+	"math/big"
+
+	"github.com/ethereum/go-ethereum/common"
+	"github.com/ethereum/go-ethereum/core"
+	"github.com/ethereum/go-ethereum/core/vm"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	capabilitytypes "github.com/cosmos/cosmos-sdk/x/capability/types"
 	connectiontypes "github.com/cosmos/ibc-go/v2/modules/core/03-connection/types"
 	channeltypes "github.com/cosmos/ibc-go/v2/modules/core/04-channel/types"
 	ibcexported "github.com/cosmos/ibc-go/v2/modules/core/exported"
+
+	evmtypes "github.com/tharsis/ethermint/x/evm/types"
 )
 
 // ChannelKeeper defines the expected IBC channel keeper
@@ -32,4 +40,16 @@ type PortKeeper interface {
 }
 
 // EVMKeeper defines the expected EVM keeper
-type EVMKeeper interface{} // TODO: define
+type EVMKeeper interface {
+	ChainID() *big.Int
+	WithContext(ctx sdk.Context)
+	GetParams(ctx sdk.Context) evmtypes.Params
+	GetNonce(addr common.Address) uint64
+	ApplyMessage(msg core.Message, tracer vm.Tracer, commit bool) (*evmtypes.MsgEthereumTxResponse, error)
+	SetNonce(addr common.Address, nonce uint64)
+}
+
+// v defines the expected Fee Market keeper
+type FeeMarketKeeper interface {
+	GetBaseFee(sdk.Context) *big.Int
+}

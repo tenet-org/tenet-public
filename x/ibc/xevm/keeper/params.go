@@ -2,7 +2,7 @@ package keeper
 
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/tharsis/evmos/x/ibc/evm/types"
+	"github.com/tharsis/evmos/x/ibc/xevm/types"
 )
 
 // GetParams returns the total set of IBC EVM parameters.

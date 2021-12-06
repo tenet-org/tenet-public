@@ -5,7 +5,7 @@ import (
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	ethtypes "github.com/ethereum/go-ethereum/core/types"
-	"github.com/tharsis/evmos/x/ibc/evm/types"
+	"github.com/tharsis/evmos/x/ibc/xevm/types"
 )
 
 var _ types.MsgServer = Keeper{}
@@ -14,7 +14,7 @@ func (k Keeper) IBCEthereumTx(goCtx context.Context, msg *types.MsgIBCEthereumTx
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	tx := new(ethtypes.Transaction)
-	if err := tx.UnmarshalJSON(msg.EthereumTx); err != nil {
+	if err := tx.UnmarshalBinary(msg.EthereumTx); err != nil {
 		return nil, err
 	}
 
@@ -24,7 +24,7 @@ func (k Keeper) IBCEthereumTx(goCtx context.Context, msg *types.MsgIBCEthereumTx
 		return nil, err
 	}
 
-	// k.Logger(ctx).Info("IBC fungible token transfer", "token", msg.Token.Denom, "amount", msg.Token.Amount.String(), "sender", msg.Sender, "receiver", msg.Receiver)
+	k.Logger(ctx).Info("IBC cross EVM transaction", "txhash", tx.Hash().String())
 
 	ctx.EventManager().EmitEvents(sdk.Events{
 		sdk.NewEvent(

@@ -63,12 +63,17 @@ func (msg MsgIBCEthereumTx) ValidateBasic() error {
 		return sdkerrors.Wrapf(ErrInvalidEthereumTx, "failed to unmarshal binary: %s", err.Error())
 	}
 
-	ethtx := new(evmtypes.MsgEthereumTx)
-	if err := ethtx.FromEthereumTx(tx); err != nil {
+	signer := ethtypes.LatestSignerForChainID(tx.ChainId())
+	if _, err := ethtypes.Sender(signer, tx); err != nil {
+		return sdkerrors.Wrapf(sdkerrors.ErrorInvalidSigner, err.Error())
+	}
+
+	ethTx := new(evmtypes.MsgEthereumTx)
+	if err := ethTx.FromEthereumTx(tx); err != nil {
 		return err
 	}
 
-	return ethtx.ValidateBasic()
+	return ethTx.ValidateBasic()
 }
 
 // GetSignBytes implements sdk.Msg.
@@ -78,10 +83,19 @@ func (msg MsgIBCEthereumTx) GetSignBytes() []byte {
 
 // GetSigners implements sdk.Msg
 func (msg MsgIBCEthereumTx) GetSigners() []sdk.AccAddress {
-	// FIXME:
-	// signer, err := sdk.AccAddressFromBech32(msg.Sender)
-	// if err != nil {
-	// 	panic(err)
-	// }
-	return []sdk.AccAddress{}
+	tx := new(ethtypes.Transaction)
+	err := tx.UnmarshalBinary(msg.EthereumTx)
+	if err != nil {
+		panic(err)
+	}
+
+	// NOTE: always use the most permissive signer
+	signer := ethtypes.LatestSignerForChainID(tx.ChainId())
+
+	sender, err := ethtypes.Sender(signer, tx)
+	if err != nil {
+		panic(err)
+	}
+
+	return []sdk.AccAddress{sender.Bytes()}
 }
