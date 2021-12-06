@@ -124,8 +124,8 @@ func (m *QueryParamsResponse) GetParams() *Params {
 }
 
 func init() {
-	proto.RegisterType((*QueryParamsRequest)(nil), "evmos.ibc.evm.v1.QueryParamsRequest")
-	proto.RegisterType((*QueryParamsResponse)(nil), "evmos.ibc.evm.v1.QueryParamsResponse")
+	proto.RegisterType((*QueryParamsRequest)(nil), "evmos.ibc.xevm.v1.QueryParamsRequest")
+	proto.RegisterType((*QueryParamsResponse)(nil), "evmos.ibc.xevm.v1.QueryParamsResponse")
 }
 
 func init() { proto.RegisterFile("evmos/ibc/xevm/v1/query.proto", fileDescriptor_1aee87b0f174c50f) }
@@ -179,7 +179,7 @@ func NewQueryClient(cc grpc1.ClientConn) QueryClient {
 
 func (c *queryClient) Params(ctx context.Context, in *QueryParamsRequest, opts ...grpc.CallOption) (*QueryParamsResponse, error) {
 	out := new(QueryParamsResponse)
-	err := c.cc.Invoke(ctx, "/evmos.ibc.evm.v1.Query/Params", in, out, opts...)
+	err := c.cc.Invoke(ctx, "/evmos.ibc.xevm.v1.Query/Params", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -213,7 +213,7 @@ func _Query_Params_Handler(srv interface{}, ctx context.Context, dec func(interf
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/evmos.ibc.evm.v1.Query/Params",
+		FullMethod: "/evmos.ibc.xevm.v1.Query/Params",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(QueryServer).Params(ctx, req.(*QueryParamsRequest))
@@ -222,7 +222,7 @@ func _Query_Params_Handler(srv interface{}, ctx context.Context, dec func(interf
 }
 
 var _Query_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "evmos.ibc.evm.v1.Query",
+	ServiceName: "evmos.ibc.xevm.v1.Query",
 	HandlerType: (*QueryServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

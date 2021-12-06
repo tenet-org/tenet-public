@@ -85,7 +85,7 @@ func (m *GenesisState) GetParams() Params {
 }
 
 func init() {
-	proto.RegisterType((*GenesisState)(nil), "evmos.ibc.evm.v1.GenesisState")
+	proto.RegisterType((*GenesisState)(nil), "evmos.ibc.xevm.v1.GenesisState")
 }
 
 func init() { proto.RegisterFile("evmos/ibc/xevm/v1/genesis.proto", fileDescriptor_1999aa5376134de2) }

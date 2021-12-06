@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-package evmos.ibc.evm.v1;
+package evmos.ibc.xevm.v1;
 
 option go_package = "github.com/tharsis/evmos/x/ibc/xevm/types";
 

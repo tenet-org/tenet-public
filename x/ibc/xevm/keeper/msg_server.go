@@ -10,7 +10,7 @@ import (
 
 var _ types.MsgServer = Keeper{}
 
-func (k Keeper) IBCEthereumTx(goCtx context.Context, msg *types.MsgIBCEthereumTx) (*types.MsgIBCEthereumTxResponse, error) {
+func (k Keeper) IBCEthereumTx(goCtx context.Context, msg *types.MsgXEVM) (*types.MsgXEVMResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	tx := new(ethtypes.Transaction)
@@ -38,5 +38,5 @@ func (k Keeper) IBCEthereumTx(goCtx context.Context, msg *types.MsgIBCEthereumTx
 		),
 	})
 
-	return &types.MsgIBCEthereumTxResponse{}, nil
+	return &types.MsgXEVMResponse{}, nil
 }

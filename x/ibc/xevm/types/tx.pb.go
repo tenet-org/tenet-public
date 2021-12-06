@@ -34,8 +34,8 @@ var (
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
-// MsgIBCEthereumTx defines an Ethereum tx to
-type MsgIBCEthereumTx struct {
+// MsgXEVM defines an Ethereum tx to
+type MsgXEVM struct {
 	// the port on which the packet will be sent
 	SourcePort string `protobuf:"bytes,1,opt,name=source_port,json=sourcePort,proto3" json:"source_port,omitempty" yaml:"source_port"`
 	// the channel by which the packet will be sent
@@ -50,20 +50,20 @@ type MsgIBCEthereumTx struct {
 	EthereumTx []byte `protobuf:"bytes,5,opt,name=ethereum_tx,json=ethereumTx,proto3" json:"ethereum_tx,omitempty"`
 }
 
-func (m *MsgIBCEthereumTx) Reset()         { *m = MsgIBCEthereumTx{} }
-func (m *MsgIBCEthereumTx) String() string { return proto.CompactTextString(m) }
-func (*MsgIBCEthereumTx) ProtoMessage()    {}
-func (*MsgIBCEthereumTx) Descriptor() ([]byte, []int) {
+func (m *MsgXEVM) Reset()         { *m = MsgXEVM{} }
+func (m *MsgXEVM) String() string { return proto.CompactTextString(m) }
+func (*MsgXEVM) ProtoMessage()    {}
+func (*MsgXEVM) Descriptor() ([]byte, []int) {
 	return fileDescriptor_a40d98923f08b90e, []int{0}
 }
 
-func (m *MsgIBCEthereumTx) XXX_Unmarshal(b []byte) error {
+func (m *MsgXEVM) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
 
-func (m *MsgIBCEthereumTx) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgXEVM) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgIBCEthereumTx.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgXEVM.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -74,37 +74,37 @@ func (m *MsgIBCEthereumTx) XXX_Marshal(b []byte, deterministic bool) ([]byte, er
 	}
 }
 
-func (m *MsgIBCEthereumTx) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgIBCEthereumTx.Merge(m, src)
+func (m *MsgXEVM) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgXEVM.Merge(m, src)
 }
 
-func (m *MsgIBCEthereumTx) XXX_Size() int {
+func (m *MsgXEVM) XXX_Size() int {
 	return m.Size()
 }
 
-func (m *MsgIBCEthereumTx) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgIBCEthereumTx.DiscardUnknown(m)
+func (m *MsgXEVM) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgXEVM.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgIBCEthereumTx proto.InternalMessageInfo
+var xxx_messageInfo_MsgXEVM proto.InternalMessageInfo
 
-// MsgIBCEthereumTxResponse defines the Msg/MsgIBCEthereumTx response type.
-type MsgIBCEthereumTxResponse struct{}
+// MsgXEVMResponse defines the Msg/MsgXEVM response type.
+type MsgXEVMResponse struct{}
 
-func (m *MsgIBCEthereumTxResponse) Reset()         { *m = MsgIBCEthereumTxResponse{} }
-func (m *MsgIBCEthereumTxResponse) String() string { return proto.CompactTextString(m) }
-func (*MsgIBCEthereumTxResponse) ProtoMessage()    {}
-func (*MsgIBCEthereumTxResponse) Descriptor() ([]byte, []int) {
+func (m *MsgXEVMResponse) Reset()         { *m = MsgXEVMResponse{} }
+func (m *MsgXEVMResponse) String() string { return proto.CompactTextString(m) }
+func (*MsgXEVMResponse) ProtoMessage()    {}
+func (*MsgXEVMResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_a40d98923f08b90e, []int{1}
 }
 
-func (m *MsgIBCEthereumTxResponse) XXX_Unmarshal(b []byte) error {
+func (m *MsgXEVMResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
 
-func (m *MsgIBCEthereumTxResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *MsgXEVMResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_MsgIBCEthereumTxResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_MsgXEVMResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -115,23 +115,23 @@ func (m *MsgIBCEthereumTxResponse) XXX_Marshal(b []byte, deterministic bool) ([]
 	}
 }
 
-func (m *MsgIBCEthereumTxResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_MsgIBCEthereumTxResponse.Merge(m, src)
+func (m *MsgXEVMResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_MsgXEVMResponse.Merge(m, src)
 }
 
-func (m *MsgIBCEthereumTxResponse) XXX_Size() int {
+func (m *MsgXEVMResponse) XXX_Size() int {
 	return m.Size()
 }
 
-func (m *MsgIBCEthereumTxResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_MsgIBCEthereumTxResponse.DiscardUnknown(m)
+func (m *MsgXEVMResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_MsgXEVMResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_MsgIBCEthereumTxResponse proto.InternalMessageInfo
+var xxx_messageInfo_MsgXEVMResponse proto.InternalMessageInfo
 
 func init() {
-	proto.RegisterType((*MsgIBCEthereumTx)(nil), "evmos.ibc.evm.v1.MsgIBCEthereumTx")
-	proto.RegisterType((*MsgIBCEthereumTxResponse)(nil), "evmos.ibc.evm.v1.MsgIBCEthereumTxResponse")
+	proto.RegisterType((*MsgXEVM)(nil), "evmos.ibc.xevm.v1.MsgXEVM")
+	proto.RegisterType((*MsgXEVMResponse)(nil), "evmos.ibc.xevm.v1.MsgXEVMResponse")
 }
 
 func init() { proto.RegisterFile("evmos/ibc/xevm/v1/tx.proto", fileDescriptor_a40d98923f08b90e) }
@@ -185,7 +185,7 @@ const _ = grpc.SupportPackageIsVersion4
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type MsgClient interface {
 	// IBCEthereumTx
-	IBCEthereumTx(ctx context.Context, in *MsgIBCEthereumTx, opts ...grpc.CallOption) (*MsgIBCEthereumTxResponse, error)
+	IBCEthereumTx(ctx context.Context, in *MsgXEVM, opts ...grpc.CallOption) (*MsgXEVMResponse, error)
 }
 
 type msgClient struct {
@@ -196,9 +196,9 @@ func NewMsgClient(cc grpc1.ClientConn) MsgClient {
 	return &msgClient{cc}
 }
 
-func (c *msgClient) IBCEthereumTx(ctx context.Context, in *MsgIBCEthereumTx, opts ...grpc.CallOption) (*MsgIBCEthereumTxResponse, error) {
-	out := new(MsgIBCEthereumTxResponse)
-	err := c.cc.Invoke(ctx, "/evmos.ibc.evm.v1.Msg/IBCEthereumTx", in, out, opts...)
+func (c *msgClient) IBCEthereumTx(ctx context.Context, in *MsgXEVM, opts ...grpc.CallOption) (*MsgXEVMResponse, error) {
+	out := new(MsgXEVMResponse)
+	err := c.cc.Invoke(ctx, "/evmos.ibc.xevm.v1.Msg/IBCEthereumTx", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -208,13 +208,13 @@ func (c *msgClient) IBCEthereumTx(ctx context.Context, in *MsgIBCEthereumTx, opt
 // MsgServer is the server API for Msg service.
 type MsgServer interface {
 	// IBCEthereumTx
-	IBCEthereumTx(context.Context, *MsgIBCEthereumTx) (*MsgIBCEthereumTxResponse, error)
+	IBCEthereumTx(context.Context, *MsgXEVM) (*MsgXEVMResponse, error)
 }
 
 // UnimplementedMsgServer can be embedded to have forward compatible implementations.
 type UnimplementedMsgServer struct{}
 
-func (*UnimplementedMsgServer) IBCEthereumTx(ctx context.Context, req *MsgIBCEthereumTx) (*MsgIBCEthereumTxResponse, error) {
+func (*UnimplementedMsgServer) IBCEthereumTx(ctx context.Context, req *MsgXEVM) (*MsgXEVMResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method IBCEthereumTx not implemented")
 }
 
@@ -223,7 +223,7 @@ func RegisterMsgServer(s grpc1.Server, srv MsgServer) {
 }
 
 func _Msg_IBCEthereumTx_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(MsgIBCEthereumTx)
+	in := new(MsgXEVM)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
@@ -232,16 +232,16 @@ func _Msg_IBCEthereumTx_Handler(srv interface{}, ctx context.Context, dec func(i
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/evmos.ibc.evm.v1.Msg/IBCEthereumTx",
+		FullMethod: "/evmos.ibc.xevm.v1.Msg/IBCEthereumTx",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MsgServer).IBCEthereumTx(ctx, req.(*MsgIBCEthereumTx))
+		return srv.(MsgServer).IBCEthereumTx(ctx, req.(*MsgXEVM))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
 var _Msg_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "evmos.ibc.evm.v1.Msg",
+	ServiceName: "evmos.ibc.xevm.v1.Msg",
 	HandlerType: (*MsgServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
@@ -253,7 +253,7 @@ var _Msg_serviceDesc = grpc.ServiceDesc{
 	Metadata: "evmos/ibc/xevm/v1/tx.proto",
 }
 
-func (m *MsgIBCEthereumTx) Marshal() (dAtA []byte, err error) {
+func (m *MsgXEVM) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -263,12 +263,12 @@ func (m *MsgIBCEthereumTx) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgIBCEthereumTx) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgXEVM) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgIBCEthereumTx) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgXEVM) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -312,7 +312,7 @@ func (m *MsgIBCEthereumTx) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *MsgIBCEthereumTxResponse) Marshal() (dAtA []byte, err error) {
+func (m *MsgXEVMResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -322,12 +322,12 @@ func (m *MsgIBCEthereumTxResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *MsgIBCEthereumTxResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *MsgXEVMResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *MsgIBCEthereumTxResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *MsgXEVMResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -347,7 +347,7 @@ func encodeVarintTx(dAtA []byte, offset int, v uint64) int {
 	return base
 }
 
-func (m *MsgIBCEthereumTx) Size() (n int) {
+func (m *MsgXEVM) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -373,7 +373,7 @@ func (m *MsgIBCEthereumTx) Size() (n int) {
 	return n
 }
 
-func (m *MsgIBCEthereumTxResponse) Size() (n int) {
+func (m *MsgXEVMResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -390,7 +390,7 @@ func sozTx(x uint64) (n int) {
 	return sovTx(uint64((x << 1) ^ uint64((int64(x) >> 63))))
 }
 
-func (m *MsgIBCEthereumTx) Unmarshal(dAtA []byte) error {
+func (m *MsgXEVM) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -413,10 +413,10 @@ func (m *MsgIBCEthereumTx) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgIBCEthereumTx: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgXEVM: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgIBCEthereumTx: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgXEVM: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -591,7 +591,7 @@ func (m *MsgIBCEthereumTx) Unmarshal(dAtA []byte) error {
 	return nil
 }
 
-func (m *MsgIBCEthereumTxResponse) Unmarshal(dAtA []byte) error {
+func (m *MsgXEVMResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -614,10 +614,10 @@ func (m *MsgIBCEthereumTxResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: MsgIBCEthereumTxResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: MsgXEVMResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: MsgIBCEthereumTxResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: MsgXEVMResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		default:

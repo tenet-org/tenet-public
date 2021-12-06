@@ -36,7 +36,7 @@ var (
 var filter_Msg_IBCEthereumTx_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
 
 func request_Msg_IBCEthereumTx_0(ctx context.Context, marshaler runtime.Marshaler, client MsgClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq MsgIBCEthereumTx
+	var protoReq MsgXEVM
 	var metadata runtime.ServerMetadata
 
 	if err := req.ParseForm(); err != nil {
@@ -51,7 +51,7 @@ func request_Msg_IBCEthereumTx_0(ctx context.Context, marshaler runtime.Marshale
 }
 
 func local_request_Msg_IBCEthereumTx_0(ctx context.Context, marshaler runtime.Marshaler, server MsgServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
-	var protoReq MsgIBCEthereumTx
+	var protoReq MsgXEVM
 	var metadata runtime.ServerMetadata
 
 	if err := req.ParseForm(); err != nil {

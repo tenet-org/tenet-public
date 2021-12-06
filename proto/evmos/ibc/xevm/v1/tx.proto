@@ -1,5 +1,5 @@
 syntax = "proto3";
-package evmos.ibc.evm.v1;
+package evmos.ibc.xevm.v1;
 
 option go_package = "github.com/tharsis/evmos/x/ibc/xevm/types";
 
@@ -12,13 +12,13 @@ import "ibc/core/client/v1/client.proto";
 // Msg defines the IBC EVM Msg service.
 service Msg {
   // IBCEthereumTx 
-  rpc IBCEthereumTx(MsgIBCEthereumTx) returns (MsgIBCEthereumTxResponse){
+  rpc IBCEthereumTx(MsgXEVM) returns (MsgXEVMResponse){
     option (google.api.http).get = "/evmos/ibc/xevm/v1/tx/ethereum_tx";
   };
 }
 
-// MsgIBCEthereumTx defines an Ethereum tx to 
-message MsgIBCEthereumTx {
+// MsgXEVM defines an Ethereum tx to 
+message MsgXEVM {
   option (gogoproto.equal)           = false;
   option (gogoproto.goproto_getters) = false;
 
@@ -37,5 +37,5 @@ message MsgIBCEthereumTx {
   bytes ethereum_tx = 5;
 }
 
-// MsgIBCEthereumTxResponse defines the Msg/MsgIBCEthereumTx response type.
-message MsgIBCEthereumTxResponse {}
+// MsgXEVMResponse defines the Msg/MsgXEVM response type.
+message MsgXEVMResponse {}

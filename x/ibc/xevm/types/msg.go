@@ -15,18 +15,18 @@ const (
 	TypeIBCEthereumTx = "ibc-ethereum-tx"
 )
 
-// MsgIBCEthereumTx creates a new MsgIBCEthereumTx instance
-func NewMsgIBCEthereumTx(
+// MsgXEVM creates a new MsgXEVM instance
+func NewMsgXEVM(
 	sourcePort, sourceChannel string,
 	timeoutHeight clienttypes.Height, timeoutTimestamp uint64,
 	tx *ethtypes.Transaction,
-) *MsgIBCEthereumTx {
+) *MsgXEVM {
 	bz, err := tx.MarshalBinary()
 	if err != nil {
 		return nil
 	}
 
-	return &MsgIBCEthereumTx{
+	return &MsgXEVM{
 		SourcePort:       sourcePort,
 		SourceChannel:    sourceChannel,
 		TimeoutHeight:    timeoutHeight,
@@ -36,20 +36,20 @@ func NewMsgIBCEthereumTx(
 }
 
 // Route implements sdk.Msg
-func (MsgIBCEthereumTx) Route() string {
+func (MsgXEVM) Route() string {
 	return RouterKey
 }
 
 // Type implements sdk.Msg
-func (MsgIBCEthereumTx) Type() string {
+func (MsgXEVM) Type() string {
 	return TypeIBCEthereumTx
 }
 
-// ValidateBasic performs a basic check of the MsgIBCEthereumTx fields.
+// ValidateBasic performs a basic check of the MsgXEVM fields.
 // NOTE: timeout height or timestamp values can be 0 to disable the timeout.
 // NOTE: The recipient addresses format is not validated as the format defined by
 // the chain is not known to IBC.
-func (msg MsgIBCEthereumTx) ValidateBasic() error {
+func (msg MsgXEVM) ValidateBasic() error {
 	if err := host.PortIdentifierValidator(msg.SourcePort); err != nil {
 		return sdkerrors.Wrap(err, "invalid source port ID")
 	}
@@ -77,12 +77,12 @@ func (msg MsgIBCEthereumTx) ValidateBasic() error {
 }
 
 // GetSignBytes implements sdk.Msg.
-func (msg MsgIBCEthereumTx) GetSignBytes() []byte {
+func (msg MsgXEVM) GetSignBytes() []byte {
 	panic("amino encoding not supported")
 }
 
 // GetSigners implements sdk.Msg
-func (msg MsgIBCEthereumTx) GetSigners() []sdk.AccAddress {
+func (msg MsgXEVM) GetSigners() []sdk.AccAddress {
 	tx := new(ethtypes.Transaction)
 	err := tx.UnmarshalBinary(msg.EthereumTx)
 	if err != nil {

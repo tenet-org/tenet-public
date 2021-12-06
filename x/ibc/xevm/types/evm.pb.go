@@ -89,7 +89,7 @@ func (m *Params) GetReceiveEnabled() bool {
 }
 
 func init() {
-	proto.RegisterType((*Params)(nil), "evmos.ibc.evm.v1.Params")
+	proto.RegisterType((*Params)(nil), "evmos.ibc.xevm.v1.Params")
 }
 
 func init() { proto.RegisterFile("evmos/ibc/xevm/v1/evm.proto", fileDescriptor_2aa4a8ae4b4faa24) }

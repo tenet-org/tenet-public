@@ -42,7 +42,7 @@ func NewTxCmd() *cobra.Command {
 	return txCmd
 }
 
-// NewIBCEthereumTxCmd returns the command to create a NewMsgIBCEthereumTx transaction
+// NewIBCEthereumTxCmd returns the command to create a NewMsgXEVM transaction
 func NewIBCEthereumTxCmd() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "send [src-port] [src-channel] [tx-hex]",
@@ -108,7 +108,7 @@ to the counterparty channel. Any timeout set to 0 is disabled.`),
 				}
 			}
 
-			msg := &types.MsgIBCEthereumTx{
+			msg := &types.MsgXEVM{
 				SourcePort:       srcPort,
 				SourceChannel:    srcChannel,
 				TimeoutHeight:    timeoutHeight,
