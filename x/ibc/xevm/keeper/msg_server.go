@@ -10,7 +10,7 @@ import (
 
 var _ types.MsgServer = Keeper{}
 
-func (k Keeper) IBCEthereumTx(goCtx context.Context, msg *types.MsgXEVM) (*types.MsgXEVMResponse, error) {
+func (k Keeper) IBCEthereumTx(goCtx context.Context, msg *types.MsgCrossEVM) (*types.MsgCrossEVMResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	tx := new(ethtypes.Transaction)
@@ -18,7 +18,7 @@ func (k Keeper) IBCEthereumTx(goCtx context.Context, msg *types.MsgXEVM) (*types
 		return nil, err
 	}
 
-	if err := k.SendIBCEthereumTx(
+	if err := k.SendCrossEVMTx(
 		ctx, msg.SourcePort, msg.SourceChannel, msg.TimeoutHeight, msg.TimeoutTimestamp, tx,
 	); err != nil {
 		return nil, err
@@ -38,5 +38,5 @@ func (k Keeper) IBCEthereumTx(goCtx context.Context, msg *types.MsgXEVM) (*types
 		),
 	})
 
-	return &types.MsgXEVMResponse{}, nil
+	return &types.MsgCrossEVMResponse{}, nil
 }

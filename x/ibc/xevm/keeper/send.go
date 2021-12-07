@@ -14,7 +14,7 @@ import (
 
 // SendIBCEthereumTx encodes an Ethereum transaction in an IBC packet data and
 // sends it to an EVM destination chain.
-func (k Keeper) SendIBCEthereumTx(
+func (k Keeper) SendCrossEVMTx(
 	ctx sdk.Context,
 	sourcePort,
 	sourceChannel string,

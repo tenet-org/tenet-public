@@ -4,7 +4,7 @@
 
 ## Table of Contents
 
-- [evmos/ibc/xevm/v1/evm.proto](#evmos/ibc/xevm/v1/evm.proto)
+- [evmos/ibc/xevm/v1/xevm.proto](#evmos/ibc/xevm/v1/xevm.proto)
     - [Params](#evmos.ibc.xevm.v1.Params)
   
 - [evmos/ibc/xevm/v1/genesis.proto](#evmos/ibc/xevm/v1/genesis.proto)
@@ -17,8 +17,8 @@
     - [Query](#evmos.ibc.xevm.v1.Query)
   
 - [evmos/ibc/xevm/v1/tx.proto](#evmos/ibc/xevm/v1/tx.proto)
-    - [MsgXEVM](#evmos.ibc.xevm.v1.MsgXEVM)
-    - [MsgXEVMResponse](#evmos.ibc.xevm.v1.MsgXEVMResponse)
+    - [MsgCrossEVM](#evmos.ibc.xevm.v1.MsgCrossEVM)
+    - [MsgCrossEVMResponse](#evmos.ibc.xevm.v1.MsgCrossEVMResponse)
   
     - [Msg](#evmos.ibc.xevm.v1.Msg)
   
@@ -57,10 +57,10 @@
 
 
 
-<a name="evmos/ibc/xevm/v1/evm.proto"></a>
+<a name="evmos/ibc/xevm/v1/xevm.proto"></a>
 <p align="right"><a href="#top">Top</a></p>
 
-## evmos/ibc/xevm/v1/evm.proto
+## evmos/ibc/xevm/v1/xevm.proto
 
 
 
@@ -179,10 +179,10 @@ Query provides defines the gRPC querier service.
 
 
 
-<a name="evmos.ibc.xevm.v1.MsgXEVM"></a>
+<a name="evmos.ibc.xevm.v1.MsgCrossEVM"></a>
 
-### MsgXEVM
-MsgXEVM defines an Ethereum tx to
+### MsgCrossEVM
+MsgCrossEVM defines an Ethereum tx to
 
 
 | Field | Type | Label | Description |
@@ -198,10 +198,10 @@ MsgXEVM defines an Ethereum tx to
 
 
 
-<a name="evmos.ibc.xevm.v1.MsgXEVMResponse"></a>
+<a name="evmos.ibc.xevm.v1.MsgCrossEVMResponse"></a>
 
-### MsgXEVMResponse
-MsgXEVMResponse defines the Msg/MsgXEVM response type.
+### MsgCrossEVMResponse
+MsgCrossEVMResponse defines the Msg/MsgCrossEVM response type.
 
 
 
@@ -221,7 +221,7 @@ Msg defines the IBC EVM Msg service.
 
 | Method Name | Request Type | Response Type | Description | HTTP Verb | Endpoint |
 | ----------- | ------------ | ------------- | ------------| ------- | -------- |
-| `IBCEthereumTx` | [MsgXEVM](#evmos.ibc.xevm.v1.MsgXEVM) | [MsgXEVMResponse](#evmos.ibc.xevm.v1.MsgXEVMResponse) | IBCEthereumTx | GET|/evmos/ibc/xevm/v1/tx/ethereum_tx|
+| `IBCEthereumTx` | [MsgCrossEVM](#evmos.ibc.xevm.v1.MsgCrossEVM) | [MsgCrossEVMResponse](#evmos.ibc.xevm.v1.MsgCrossEVMResponse) | IBCEthereumTx | GET|/evmos/ibc/xevm/v1/tx/ethereum_tx|
 
  <!-- end services -->
 
@@ -613,3 +613,4 @@ Msg defines the intrarelayer Msg service.
 | <a name="bool" /> bool |  | bool | boolean | boolean | bool | bool | boolean | TrueClass/FalseClass |
 | <a name="string" /> string | A string must always contain UTF-8 encoded or 7-bit ASCII text. | string | String | str/unicode | string | string | string | String (UTF-8) |
 | <a name="bytes" /> bytes | May contain any arbitrary sequence of bytes. | string | ByteString | str | []byte | ByteString | string | String (ASCII-8BIT) |
+

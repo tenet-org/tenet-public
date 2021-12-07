@@ -5,7 +5,7 @@ package evmos.ibc.xevm.v1;
 option go_package = "github.com/tharsis/evmos/x/ibc/xevm/types";
 
 import "google/api/annotations.proto";
-import "evmos/ibc/xevm/v1/evm.proto";
+import "evmos/ibc/xevm/v1/xevm.proto";
 
 // Query provides defines the gRPC querier service.
 service Query {

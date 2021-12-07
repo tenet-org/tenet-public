@@ -21,9 +21,9 @@ func TestMsgsTestSuite(t *testing.T) {
 	suite.Run(t, new(MsgsTestSuite))
 }
 
-func (suite *MsgsTestSuite) TestMsgXEVMGetters() {
-	msgInvalid := MsgXEVM{}
-	msg := NewMsgXEVM(
+func (suite *MsgsTestSuite) TestMsgCrossEVMGetters() {
+	msgInvalid := MsgCrossEVM{}
+	msg := NewMsgCrossEVM(
 		PortID, "", types.NewHeight(1, 10), 0, ethtypes.NewTx(&ethtypes.DynamicFeeTx{}),
 	)
 	suite.Require().Equal(RouterKey, msg.Route())
@@ -36,7 +36,7 @@ func (suite *MsgsTestSuite) TestMsgXEVMGetters() {
 func (suite *MsgsTestSuite) TestMsgIBCEthereum_GetSigners() {
 }
 
-func (suite *MsgsTestSuite) TestMsgXEVM() {
+func (suite *MsgsTestSuite) TestMsgCrossEVM() {
 	invalidBz, err := ethtypes.NewTx(&ethtypes.DynamicFeeTx{}).MarshalBinary()
 	suite.Require().NoError(err)
 
@@ -67,22 +67,22 @@ func (suite *MsgsTestSuite) TestMsgXEVM() {
 
 	testCases := []struct {
 		name       string
-		msg        MsgXEVM
+		msg        MsgCrossEVM
 		expectPass bool
 	}{
 		{
 			"invalid source port",
-			MsgXEVM{SourcePort: ""},
+			MsgCrossEVM{SourcePort: ""},
 			false,
 		},
 		{
 			"invalid source channel",
-			MsgXEVM{SourcePort: PortID, SourceChannel: ""},
+			MsgCrossEVM{SourcePort: PortID, SourceChannel: ""},
 			false,
 		},
 		{
 			"empty ethereum tx",
-			MsgXEVM{
+			MsgCrossEVM{
 				SourcePort:    PortID,
 				SourceChannel: "channel-10",
 			},
@@ -90,7 +90,7 @@ func (suite *MsgsTestSuite) TestMsgXEVM() {
 		},
 		{
 			"empty ethereum tx",
-			MsgXEVM{
+			MsgCrossEVM{
 				SourcePort:    PortID,
 				SourceChannel: "channel-10",
 				EthereumTx:    invalidBz,
@@ -99,7 +99,7 @@ func (suite *MsgsTestSuite) TestMsgXEVM() {
 		},
 		{
 			"valid tx",
-			MsgXEVM{
+			MsgCrossEVM{
 				SourcePort:    PortID,
 				SourceChannel: "channel-10",
 				EthereumTx:    bz,
