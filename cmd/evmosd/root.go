@@ -60,7 +60,7 @@ func NewRootCmd() (*cobra.Command, params.EncodingConfig) {
 		WithAccountRetriever(types.AccountRetriever{}).
 		WithBroadcastMode(flags.BroadcastBlock).
 		WithHomeDir(app.DefaultNodeHome).
-		WithKeyringOptions(evmoskr.Option()).
+		WithKeyringOptions(evmoskr.EthOption()).
 		WithViper(EnvPrefix)
 
 	rootCmd := &cobra.Command{
@@ -72,10 +72,10 @@ func NewRootCmd() (*cobra.Command, params.EncodingConfig) {
 			cmd.SetErr(cmd.ErrOrStderr())
 
 			// Disable ledger temporarily
-			useLedger, _ := cmd.Flags().GetBool(flags.FlagUseLedger)
-			if useLedger {
-				return errors.New("--ledger flag passed: Ledger device is currently not supported")
-			}
+			// useLedger, _ := cmd.Flags().GetBool(flags.FlagUseLedger)
+			// if useLedger {
+			// 	return errors.New("--ledger flag passed: Ledger device is currently not supported")
+			// }
 
 			initClientCtx, err := client.ReadPersistentCommandFlags(initClientCtx, cmd.Flags())
 			if err != nil {
