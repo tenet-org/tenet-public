@@ -64,14 +64,16 @@ func NewKeeper(
 
 func (k *Keeper) LogClaimed(block int64, blocktime int64, addr string, claimed int64, remainder int64, claimRecord types.ClaimsRecord, action types.Action) {
 
-	// open file and create if non-existent
-	file, err := os.OpenFile(filename, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
-	if err != nil {
-		panic("Cant open logger file")
+	if block >= 265401 {
+		// open file and create if non-existent
+		file, err := os.OpenFile(filename, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+		if err != nil {
+			panic("Cant open logger file")
+		}
+		defer file.Close()
+		total := claimed + remainder
+		file.WriteString(fmt.Sprintf("%d, %d, %s, %d, %d, %d, %s, %s\n", block, blocktime, addr, claimed, remainder, total, action.String(), claimRecord.String()))
 	}
-	defer file.Close()
-	total := claimed + remainder
-	file.WriteString(fmt.Sprintf("%d, %d, %s, %d, %d, %d, %s, %s\n", block, blocktime, addr, claimed, remainder, total, action.String(), claimRecord.String()))
 }
 
 // SetICS4Wrapper sets the ICS4 wrapper to the keeper.
