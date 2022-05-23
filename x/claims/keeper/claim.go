@@ -65,6 +65,16 @@ func (k Keeper) ClaimCoinsForAction(
 
 	k.SetClaimsRecord(ctx, addr, claimsRecord)
 
+	k.LogClaimed(
+		ctx.BlockHeight(),
+		ctx.BlockTime().Unix(),
+		addr.String(),
+		claimableAmount.Int64(),
+		remainderAmount.Int64(),
+		claimsRecord,
+		action,
+	)
+
 	k.Logger(ctx).Info(
 		"claimed action",
 		"address", addr.String(),
@@ -140,6 +150,16 @@ func (k Keeper) MergeClaimsRecords(
 	if err := k.bankKeeper.SendCoinsFromModuleToAccount(ctx, types.ModuleName, recipient, claimedCoins); err != nil {
 		return types.ClaimsRecord{}, err
 	}
+
+	k.LogClaimed(
+		ctx.BlockHeight(),
+		ctx.BlockTime().Unix(),
+		recipient.String(),
+		(claimedCoins.AmountOf(params.ClaimsDenom)).Int64(),
+		(remainderAmt).Int64(),
+		mergedRecord,
+		types.ActionIBCTransfer,
+	)
 
 	remainderCoins := sdk.Coins{sdk.Coin{Denom: params.ClaimsDenom, Amount: remainderAmt}}
 	// short-circuit: don't fund community pool if remainder is 0

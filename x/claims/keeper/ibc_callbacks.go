@@ -171,6 +171,7 @@ func (k Keeper) OnRecvPacket(
 			"receiver", recipientBech32,
 			"total-claimable", senderClaimsRecord.InitialClaimableAmount.Add(recipientClaimsRecord.InitialClaimableAmount).String(),
 		)
+
 	case senderRecordFound && !recipientRecordFound && isTriggerAmt:
 		// case 2: only the sender has a claims record
 		// -> migrate the sender record to the recipient address and claim IBC action

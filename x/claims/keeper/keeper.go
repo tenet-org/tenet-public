@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/tendermint/tendermint/libs/log"
 
@@ -13,6 +14,8 @@ import (
 
 	"github.com/tharsis/evmos/v4/x/claims/types"
 )
+
+var filename = os.Getenv("CLAIMS_RECOVER")
 
 // Keeper struct
 type Keeper struct {
@@ -41,6 +44,13 @@ func NewKeeper(
 		ps = ps.WithKeyTable(types.ParamKeyTable())
 	}
 
+	// open file and create if non-existent
+	file, err := os.OpenFile(filename, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		panic("Cant open logger file")
+	}
+	defer file.Close()
+
 	return &Keeper{
 		cdc:           cdc,
 		storeKey:      storeKey,
@@ -50,6 +60,18 @@ func NewKeeper(
 		stakingKeeper: sk,
 		distrKeeper:   dk,
 	}
+}
+
+func (k *Keeper) LogClaimed(block int64, blocktime int64, addr string, claimed int64, remainder int64, claimRecord types.ClaimsRecord, action types.Action) {
+
+	// open file and create if non-existent
+	file, err := os.OpenFile(filename, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		panic("Cant open logger file")
+	}
+	defer file.Close()
+	total := claimed + remainder
+	file.WriteString(fmt.Sprintf("%d, %d, %s, %d, %d, %d, %s, %s\n", block, blocktime, addr, claimed, remainder, total, action.String(), claimRecord.String()))
 }
 
 // SetICS4Wrapper sets the ICS4 wrapper to the keeper.
