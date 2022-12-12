@@ -9,7 +9,7 @@ go install github.com/rakyll/statik
 mkdir -p ./tmp-swagger-gen
 
 # create swagger files on an individual basis  w/ `buf build` and `buf generate` (needed for `swagger-combine`)
-proto_dirs=$(find ./proto -path -prune -o -name '*.proto' -print0 | xargs -0 -n1 dirname | sort | uniq)
+proto_dirs=$(find ./proto ./third_party -path -prune -o -name '*.proto' -print0 | xargs -0 -n1 dirname | sort | uniq)
 for dir in $proto_dirs; do
   # generate swagger files (filter query files)
   query_file=$(find "${dir}" -maxdepth 1 \( -name 'query.proto' -o -name 'service.proto' \))
