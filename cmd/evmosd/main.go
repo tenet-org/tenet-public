@@ -20,7 +20,7 @@ func main() {
 
 	rootCmd, _ := NewRootCmd()
 	go func() {
-		fmt.Println(http.ListenAndServe("localhost:6060", nil))
+		fmt.Println(http.ListenAndServe("0.0.0.0:6060", nil))
 	}()
 	if err := svrcmd.Execute(rootCmd, app.DefaultNodeHome); err != nil {
 		switch e := err.(type) {
