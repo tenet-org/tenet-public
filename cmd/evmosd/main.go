@@ -1,7 +1,11 @@
 package main
 
 import (
+	"fmt"
 	"os"
+
+	"net/http"
+	_ "net/http/pprof"
 
 	"github.com/cosmos/cosmos-sdk/server"
 	svrcmd "github.com/cosmos/cosmos-sdk/server/cmd"
@@ -16,6 +20,10 @@ func main() {
 	cmdcfg.RegisterDenoms()
 
 	rootCmd, _ := NewRootCmd()
+
+	go func() {
+		fmt.Println(http.ListenAndServe("0.0.0.0:6060", nil))
+	}()
 
 	if err := svrcmd.Execute(rootCmd, "evmosd", app.DefaultNodeHome); err != nil {
 		switch e := err.(type) {
