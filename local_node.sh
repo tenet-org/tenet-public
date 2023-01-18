@@ -19,6 +19,7 @@ TRACE=""
 
 # Path variables
 CONFIG=$HOMEDIR/config/config.toml
+APP_CONFIG=$HOMEDIR/config/app.toml
 GENESIS=$HOMEDIR/config/genesis.json
 TMP_GENESIS=$HOMEDIR/config/tmp_genesis.json
 
@@ -42,6 +43,7 @@ if [ -d "$HOMEDIR" ]; then
 else
 	overwrite="Y"
 fi
+
 
 # Setup local node if overwrite is set to Yes, otherwise skip setup
 if [[ $overwrite == "y" || $overwrite == "Y" ]]; then
@@ -110,6 +112,29 @@ if [[ $overwrite == "y" || $overwrite == "Y" ]]; then
 		fi
 	fi
 
+    # enable prometheus metrics
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        sed -i '' 's/prometheus = false/prometheus = true/' "$CONFIG"
+        sed -i '' 's/prometheus-retention-time = 0/prometheus-retention-time  = 1000000000000/g' "$APP_CONFIG"
+        sed -i '' 's/enabled = false/enabled = true/g' "$APP_CONFIG"
+    else
+        sed -i 's/prometheus = false/prometheus = true/' "$CONFIG"
+        sed -i 's/prometheus-retention-time  = "0"/prometheus-retention-time  = "1000000000000"/g' "$APP_CONFIG"
+        sed -i 's/enabled = false/enabled = true/g' "$APP_CONFIG"
+    fi
+	
+	# Change proposal periods to pass within a reasonable time for local testing
+	cat $HOMEDIR/config/genesis.json | jq '.app_state["gov"]["deposit_params"]["max_deposit_period"]="30s"' > $HOMEDIR/config/tmp_genesis.json && mv $HOMEDIR/config/tmp_genesis.json $HOMEDIR/config/genesis.json
+	cat $HOMEDIR/config/genesis.json | jq '.app_state["gov"]["voting_params"]["voting_period"]="30s"' > $HOMEDIR/config/tmp_genesis.json && mv $HOMEDIR/config/tmp_genesis.json $HOMEDIR/config/genesis.json
+
+	# set custom pruning settings
+	sed -i 's/pruning = "default"/pruning = "custom"/g' $APP_CONFIG
+	sed -i 's/pruning-keep-recent = "0"/pruning-keep-recent = "2"/g' $APP_CONFIG
+	sed -i 's/pruning-interval = "0"/pruning-interval = "10"/g' $APP_CONFIG
+
+	# Set block sync to be false. This allow us to achieve liveness without additional peers
+	sed -i -e '/fast_sync =/ s/= .*/= false/' "$CONFIG"
+
 	# Allocate genesis accounts (cosmos formatted addresses)
 	for KEY in "${KEYS[@]}"; do
 		evmosd add-genesis-account $KEY 100000000000000000000000000aevmos --keyring-backend $KEYRING --home "$HOMEDIR"
@@ -140,4 +165,4 @@ if [[ $overwrite == "y" || $overwrite == "Y" ]]; then
 fi
 
 # Start the node (remove the --pruning=nothing flag if historical queries are not needed)
-evmosd start --pruning=nothing "$TRACE" --log_level $LOGLEVEL --minimum-gas-prices=0.0001aevmos --json-rpc.api eth,txpool,personal,net,debug,web3 --api.enable --home "$HOMEDIR"
+evmosd start --metrics "$TRACE" --log_level $LOGLEVEL --minimum-gas-prices=0.0001aevmos --json-rpc.api eth,txpool,personal,net,debug,web3 --api.enable --home "$HOMEDIR"
