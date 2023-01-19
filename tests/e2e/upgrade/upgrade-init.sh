@@ -10,6 +10,9 @@ LOGLEVEL="info"
 #TRACE="--trace"
 TRACE=""
 
+CONFIG="$HOME/.evmosd/config/config.toml"
+APP_CONFIG="$HOME/.evmosd/config/app.toml"
+
 # validate dependencies are installed
 command -v jq > /dev/null 2>&1 || { echo >&2 "jq not installed. More info: https://stedolan.github.io/jq/download/"; exit 1; }
 
@@ -88,6 +91,25 @@ if [[ $1 == "pending" ]]; then
   fi
 fi
 
+## enable prometheus metrics
+#if [[ "$OSTYPE" == "darwin"* ]]; then
+#    sed -i '' 's/prometheus = false/prometheus = true/' "$CONFIG"
+#    sed -i '' 's/prometheus-retention-time = 0/prometheus-retention-time  = 1000000000000/g' "$APP_CONFIG"
+#    sed -i '' 's/enabled = false/enabled = true/g' "$APP_CONFIG"
+#else
+#    sed -i 's/prometheus = false/prometheus = true/' "$CONFIG"
+#    sed -i 's/prometheus-retention-time  = "0"/prometheus-retention-time  = "1000000000000"/g' "$APP_CONFIG"
+#    sed -i 's/enabled = false/enabled = true/g' "$APP_CONFIG"
+#fi
+
+# set custom pruning settings
+sed -i 's/pruning = "default"/pruning = "custom"/g' "$APP_CONFIG"
+sed -i 's/pruning-keep-recent = "0"/pruning-keep-recent = "2"/g' "$APP_CONFIG"
+sed -i 's/pruning-interval = "0"/pruning-interval = "10"/g' "$APP_CONFIG"
+
+# Set block sync to be false. This allow us to achieve liveness without additional peers
+sed -i -e '/fast_sync =/ s/= .*/= false/' "$CONFIG"
+
 # Allocate genesis accounts (cosmos formatted addresses)
 evmosd add-genesis-account $KEY 100000000000000000000000000aevmos --keyring-backend $KEYRING
 
@@ -117,4 +139,4 @@ if [[ $1 == "pending" ]]; then
 fi
 
 # Start the node (remove the --pruning=nothing flag if historical queries are not needed)
-evmosd start --pruning=nothing "$TRACE" --log_level $LOGLEVEL --minimum-gas-prices=0.0001aevmos --json-rpc.api eth,txpool,personal,net,debug,web3
+evmosd start --metrics "$TRACE" --log_level $LOGLEVEL --minimum-gas-prices=0.0001aevmos --json-rpc.api eth,txpool,personal,net,debug,web3
