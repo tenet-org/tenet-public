@@ -187,7 +187,7 @@ func (s *IntegrationTestSuite) upgrade() {
 	s.T().Log("node started! waiting for node to produce 10 blocks")
 	// make sure node produce blocks after upgrade
 	err = s.upgradeManager.WaitForHeight(ctx, firstUpgradeHeight+10)
-	s.Require().NoError(err, "node not produce blocks")
+	s.Require().NoError(err, "node does not produce blocks after upgrading")
 }
 
 func (s *IntegrationTestSuite) TearDownSuite() {
