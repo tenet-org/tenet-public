@@ -111,20 +111,13 @@ func (m *Manager) RunNode(node *Node) error {
 			}
 			// if node failed to start, i.e. ExitCode != 0, return container logs
 			if c.State.ExitCode != 0 {
-				var outBuf, errBuf bytes.Buffer
 				// no error check becuse success logs retieving returns error anyways
-				_ = m.Client().Logs(docker.LogsOptions{
-					Container:    resource.Container.ID,
-					OutputStream: &outBuf,
-					ErrorStream:  &errBuf,
-					Stdout:       true,
-					Stderr:       true,
-				})
+				outString, errString, _ := m.GetLogs(resource.Container.ID)
 				return fmt.Errorf(
 					"can't start evmos node, container exit code: %d\n\n[error stream]:\n\n%s\n\n[output stream]:\n\n%s",
 					c.State.ExitCode,
-					errBuf.String(),
-					outBuf.String(),
+					errString,
+					outString,
 				)
 			}
 			// get host:port for current container in local network
@@ -150,13 +143,21 @@ func (m *Manager) RunNode(node *Node) error {
 func (m *Manager) WaitForHeight(ctx context.Context, height int) error {
 	var currentHeight int
 	var err error
+	var errString, outString string
 	ticker := time.NewTicker(5 * time.Minute)
+
 	for {
 		select {
 		case <-ticker.C:
-			return fmt.Errorf("can't reach height %d, due: %w", height, err)
+			return fmt.Errorf("can't reach height %d,\ndue to: %s\n%s", height, errString, outString)
 		default:
 			currentHeight, err = m.nodeHeight(ctx)
+			if err != nil {
+				containerID := m.ContainerID()
+				fmt.Println("Trying to get the container logs...")
+				errString, outString, _ = m.GetLogs(containerID)
+			}
+
 			if currentHeight >= height {
 				return nil
 			}
@@ -205,4 +206,17 @@ func (m *Manager) RemoveNetwork() error {
 
 func (m *Manager) KillCurrentNode() error {
 	return m.pool.Client.StopContainer(m.ContainerID(), 5)
+}
+
+// GetLogs returns the container logs from the currently running container.
+func (m *Manager) GetLogs(containerID string) (outString, errString string, err error) {
+	var outBuf, errBuf bytes.Buffer
+	err = m.Client().Logs(docker.LogsOptions{
+		Container:    containerID,
+		OutputStream: &outBuf,
+		ErrorStream:  &errBuf,
+		Stdout:       true,
+		Stderr:       true,
+	})
+	return
 }
