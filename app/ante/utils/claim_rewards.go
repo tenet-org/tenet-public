@@ -37,9 +37,7 @@ func ClaimStakingRewardsIfNecessary(
 	stakingDenom := stakingKeeper.BondDenom(ctx)
 	found, amountInStakingDenom := amount.Find(stakingDenom)
 	if !found {
-		return errortypes.ErrInsufficientFee.Wrapf(
-			"wrong fee denomination; got: %s; required: %s", amount, stakingDenom,
-		)
+		return nil
 	}
 
 	// TODO: Is this only giving the spendable balance or also the locked balance?

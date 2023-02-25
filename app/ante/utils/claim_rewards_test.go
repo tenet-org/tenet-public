@@ -122,13 +122,6 @@ func (suite *AnteTestSuite) TestClaimStakingRewardsIfNecessary() {
 			amount:   sdk.Coins{sdk.Coin{Denom: utils.BaseDenom, Amount: sdk.ZeroInt()}},
 			expErr:   false,
 		},
-		{
-			name:        "fail - wrong coin denom",
-			malleate:    func(addr sdk.AccAddress) {},
-			amount:      sdk.Coins{sdk.Coin{Denom: "wrongCoin", Amount: sdk.NewInt(1000)}},
-			expErr:      true,
-			errContains: "wrong fee denomination",
-		},
 	}
 
 	for _, tc := range testcases {
